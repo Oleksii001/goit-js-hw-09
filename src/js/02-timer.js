@@ -59,6 +59,9 @@ const btnReset = document.querySelector('button[data-reset]');
         minutesEl.textContent = '00';
         secondsEl.textContent = '00';
         btnStart.disabled = false;
+        inputEl.disabled = false;        
+        datetimePicker.disabled = false;
+
       }
     }
 
