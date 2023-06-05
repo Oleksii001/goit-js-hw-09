@@ -1,4 +1,5 @@
- function createPromise(position, delay) {
+ import Notiflix from 'notiflix';
+function createPromise(position, delay) {
       return new Promise((resolve, reject) => {
         const shouldResolve = Math.random() > 0.3;
         setTimeout(() => {
@@ -23,26 +24,28 @@
       const step = parseInt(stepInput.value);
       const amount = parseInt(amountInput.value);
 
+      if (firstDelay < 0 || step < 0 || amount <= 0) {
+        const notification = document.createElement('p');
+        Notiflix.Notify.failure("Invalid input values");
+        // notification.textContent = 'Invalid input values';
+        resultsDiv.appendChild(notification);
+        return;
+      }
+
       let delay = firstDelay;
       for (let i = 1; i <= amount; i++) {
         createPromise(i, delay)
           .then(({ position, delay }) => {
-            const result = document.createElement('p');
-            result.textContent = `✅ Fulfilled promise ${position} in ${delay}ms`;
-            resultsDiv.appendChild(result);
-
+            Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
             setTimeout(() => {
-              result.remove();
+              Notiflix.Notify.remove('.notiflix-notification');
             }, 4000);
           })
           .catch(({ position, delay }) => {
-            const result = document.createElement('p');
-            result.textContent = `❌ Rejected promise ${position} in ${delay}ms`;
-            resultsDiv.appendChild(result);
-
+            Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
             setTimeout(() => {
-              result.remove();
-            }, 10000);
+              Notiflix.Notify.remove('.notiflix-notification');
+            }, 4000);
           });
 
         delay += step;
